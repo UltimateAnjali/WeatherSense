@@ -4,42 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.katra.weathersense.MainActivity"
-    android:background="@color/colorPrimary">
+    tools:context="com.katra.weathersense.MainActivity">
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/wi_3200"
-        android:id="@+id/weatherCondImageView"
-        android:tint="@color/colorAccent"
-        android:layout_centerInParent="true"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        android:id="@+id/tempLinearLayout"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/wi_3200"
+            android:id="@+id/weatherCondImageView"
+            android:tint="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0 F"
+            android:id="@+id/tempTextView"
+            android:layout_below="@+id/weatherCondImageView"
+            android:textSize="45sp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="temperature"
-        android:id="@+id/tempTextView"
-        android:layout_below="@+id/weatherCondImageView"
-        android:gravity="center"
-        android:textSize="25sp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="location"
         android:id="@+id/locTextView"
-        android:layout_below="@+id/tempTextView"
+        android:layout_below="@+id/tempLinearLayout"
         android:gravity="center"
+        android:text="location"
         android:textSize="15sp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Condition"
         android:id="@+id/condTextView"
         android:layout_below="@+id/locTextView"
         android:gravity="center"
+        android:text="Condition"
         android:textSize="20sp"/>
 
 </RelativeLayout>
