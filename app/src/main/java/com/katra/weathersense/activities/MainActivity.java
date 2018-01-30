@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         weatherIcon = (ImageView)findViewById(R.id.weatherCondImageView);
 
         fontFace = new MyFonts(getApplicationContext());
-        tempText.setTypeface(fontFace.getPoppins());
+        tempText.setTypeface(fontFace.getPoppinsThin());
         locText.setTypeface(fontFace.getSlabo());
         condText.setTypeface(fontFace.getMerri());
 

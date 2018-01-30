@@ -21,8 +21,8 @@ public class MyFonts {
         return mTypeface;
     }
 
-    public Typeface getPoppins(){
-        mTypeface = Typeface.createFromAsset(mContext.getAssets(),"fonts/Poppins-Regular.ttf");
+    public Typeface getPoppinsThin(){
+        mTypeface = Typeface.createFromAsset(mContext.getAssets(),"fonts/Poppins-Thin.ttf");
         return mTypeface;
     }
 
