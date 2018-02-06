@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WeatherSense</string>
+    <string name="API_KEY">AIzaSyCPtejnekpNIaOYTF76ziOiHur5jF47j9w</string>
 </resources>

@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,12 +39,11 @@ import com.katra.weathersense.dataModels.Item;
 import com.katra.weathersense.services.WeatherServiceCallback;
 import com.katra.weathersense.services.YahooWeatherService;
 
-public class MainActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, WeatherServiceCallback {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, WeatherServiceCallback {
 
     private static final String TAG = "<<MainActivity>>";
     private TextView tempText, locText, condText;
     private ImageView weatherIcon;
-    private Button plusBtn;
 
     private MyFonts fontFace;
 
@@ -88,7 +89,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         mAdView.loadAd(adRequest);
 
         //Mapping all the elements
-        plusBtn = (Button) findViewById(R.id.launch_auto);
         tempText = (TextView)findViewById(R.id.tempTextView);
         locText = (TextView)findViewById(R.id.locTextView);
         condText = (TextView)findViewById(R.id.condTextView);
@@ -108,11 +108,18 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
                 .build();
+    }
 
-        //Handling the click event for the button
-        plusBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigation_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_add_place:{
                 try {
                     //Creating an intent to open the autocomplete search for places
                     Intent intent =
@@ -129,8 +136,13 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                     Toast.makeText(getApplicationContext(),"Something went wrong!",Toast.LENGTH_LONG);
                     Log.e(TAG,e.getMessage());
                 }
+                return true;
             }
-        });
+
+            default:{
+                return super.onOptionsItemSelected(item);
+            }
+        }
     }
 
     @Override
