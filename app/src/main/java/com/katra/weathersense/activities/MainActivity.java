@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -41,7 +43,7 @@ import com.katra.weathersense.services.YahooWeatherService;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, WeatherServiceCallback {
 
-    private static final String TAG = "<<MainActivity>>";
+    private RelativeLayout mainLayout;
     private TextView tempText, locText, condText;
     private ImageView weatherIcon;
 
@@ -58,17 +60,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private AdView mAdView;
 
+    private static final String TAG = "<<MainActivity>>";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Window window = getWindow();
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(Color.TRANSPARENT);
-//        }
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+        Window window = getWindow();
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
 
         //Constructing a Geo Data Client
         mGeoDataClient = Places.getGeoDataClient(this, null);
@@ -89,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         mAdView.loadAd(adRequest);
 
         //Mapping all the elements
+        mainLayout = (RelativeLayout)findViewById(R.id.main_page);
         tempText = (TextView)findViewById(R.id.tempTextView);
         locText = (TextView)findViewById(R.id.locTextView);
         condText = (TextView)findViewById(R.id.condTextView);
@@ -194,10 +202,35 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         @SuppressWarnings("deprecation") Drawable weatherIconImage = getResources().getDrawable(resId);
         weatherIcon.setImageDrawable(weatherIconImage);
 
+        //Getting the drawable resource Id to set the background
+        int backResId = getResources().getIdentifier("drawable/code_"+channel.getItem().getCondition().getCode(),
+                null,
+                getPackageName());
+
+
+        @SuppressWarnings("deprecation")Drawable backgroundImage = getResources().getDrawable(backResId);
+
+//        Glide.with(getApplicationContext()).load(R.drawable.code_3).into(new SimpleTarget<Drawable>() {
+//            @Override
+//            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    mainLayout.setBackground(resource);
+//                }
+//            }
+//        });
+
+//        Glide.with(this.getApplicationContext()).load(backgroundImage).into(new SimpleTarget<Drawable>() {
+//            @Override
+//            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    mainLayout.setBackground(resource);
+//                }
+//            }
+//        });
+       // mainLayout.setBackground(backgroundImage);
+
 
         locText.setText(service.getLocation());
-
-//        int tempInCelsius = (item.getCondition().getTemperature() - 32) * (5/9);
         tempText.setText(item.getCondition().getTemperature()+"\u00B0"+"F");
         condText.setText(item.getCondition().getDesc());
     }
